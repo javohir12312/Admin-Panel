@@ -24,7 +24,7 @@ const AppComponentHeader = ({title, description, refUrl}) => {
         {refUrl ? (
           <div style={{height: 30}}>
             <Button
-              type='primary'
+              type='success'
               ghost
               href={refUrl}
               icon={<LinkOutlined />}

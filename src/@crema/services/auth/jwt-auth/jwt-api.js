@@ -11,7 +11,7 @@ jwtAxios.interceptors.response.use(
   (err) => {
     if (err.response && err.response.data.msg === 'Token is not valid') {
       console.log('Need to logout user');
-      // store.dispatch({type: LOGOUT});
+      // store.dispatch({typje: LOGOUT});
     }
     return Promise.reject(err);
   },

@@ -45,7 +45,7 @@ const ComponentCardWithoutAnim = ({
           <AppScrollbar
             style={{
               borderRadius: 8,
-              background: '#333333',
+              background: 'red',
               height: 350,
               maxHeight: 400,
             }}>

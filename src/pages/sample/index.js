@@ -9,4 +9,8 @@ export const samplePagesConfigs = [
     path: '/sample/page-2',
     component: React.lazy(() => import('./Page2')),
   },
+  {
+    path: '/sample/page-3',
+    component: React.lazy(() => import('./Page3')),
+  },
 ];

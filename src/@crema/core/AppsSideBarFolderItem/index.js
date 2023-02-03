@@ -47,7 +47,7 @@ const AppsSideBarFolderItem = ({item, path}) => {
         <span className='list-item-icon'>{getIconByName(item.icon)}</span>
         <span className='list-item-text'>{item.name}</span>
       </NavLink>
-    </div>
+    </div> 
   );
 };
 

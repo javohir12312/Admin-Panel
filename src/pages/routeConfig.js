@@ -1,6 +1,8 @@
+import { DiffFilled, FolderFilled, SlidersFilled } from '@ant-design/icons';
 import React from 'react';
-import {BiAlignLeft} from 'react-icons/bi';
-import {MdOutlineManageAccounts} from 'react-icons/md';
+import { MdOutlineManageAccounts } from 'react-icons/md';
+
+
 
 const routesConfig = [
   {
@@ -11,19 +13,27 @@ const routesConfig = [
     children: [
       {
         id: 'page-1',
-        title: 'Page 1',
+        title: 'Main',
         messageId: 'sidebar.sample.page1',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <SlidersFilled/>,
         path: '/sample/page-1',
       },
       {
         id: 'page-2',
-        title: 'Page 2',
+        title: 'All files andcomponents',
         messageId: 'sidebar.sample.page2',
         type: 'item',
-        icon: <BiAlignLeft />,
+        icon: <FolderFilled />,
         path: '/sample/page-2',
+      },
+      {
+        id: 'page-3',
+        title: 'Edits',
+        messageId: 'sidebar.sample.page3',
+        type: 'item',
+        icon: <DiffFilled/>,
+        path: '/sample/page-3',
       },
     ],
   },

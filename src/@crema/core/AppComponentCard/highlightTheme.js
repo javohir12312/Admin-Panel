@@ -48,7 +48,7 @@ export const highlightTheme = {
       types: ['keyword', 'variable'],
       style: {
         color: '#65D4EA',
-        // fontStyle: "italic"
+        fontStyle: "italic"
       },
     },
     {
