@@ -1,7 +1,9 @@
-import { DiffFilled, FolderFilled, SlidersFilled } from '@ant-design/icons';
 import React from 'react';
+import { BiCodeAlt } from 'react-icons/bi';
 import { MdOutlineManageAccounts } from 'react-icons/md';
-
+import { GoGlobe, GoMortarBoard } from "react-icons/go";
+import { ImNewspaper } from "react-icons/im";
+import { Si1001Tracklists } from "react-icons/si";
 
 
 const routesConfig = [
@@ -13,27 +15,43 @@ const routesConfig = [
     children: [
       {
         id: 'page-1',
-        title: 'Main',
+        title: 'Education',
         messageId: 'sidebar.sample.page1',
         type: 'item',
-        icon: <SlidersFilled/>,
+        icon: <GoMortarBoard />,
         path: '/sample/page-1',
       },
       {
         id: 'page-2',
-        title: 'All files andcomponents',
+        title: 'Information technology (IT)',
         messageId: 'sidebar.sample.page2',
         type: 'item',
-        icon: <FolderFilled />,
+        icon: <BiCodeAlt />,
         path: '/sample/page-2',
       },
       {
         id: 'page-3',
-        title: 'Edits',
+        title: 'Languages',
         messageId: 'sidebar.sample.page3',
         type: 'item',
-        icon: <DiffFilled/>,
+        icon: <GoGlobe />,
         path: '/sample/page-3',
+      },
+      {
+        id: 'page-4',
+        title: 'Subjects',
+        messageId: 'sidebar.sample.page4',
+        type: 'item',
+        icon: <ImNewspaper />,
+        path: '/sample/page-4',
+      },
+      {
+        id: 'page-5',
+        title: 'Others',
+        messageId: 'sidebar.sample.page5',
+        type: 'item',
+        icon: <Si1001Tracklists />,
+        path: '/sample/page-5',
       },
     ],
   },
