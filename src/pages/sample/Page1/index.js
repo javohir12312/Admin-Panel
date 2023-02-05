@@ -1,39 +1,96 @@
-import { Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
+// import {Form, Input, Button} from 'antd';
+import React from 'react';
+import {Button, Checkbox, Form, Input} from 'antd';
+import {useState} from 'react';
+import style from './Modal.module.scss';
 
 const Page1 = () => {
-  const [state, setState] = useState([]);
+  function openModal() {
+    if (modal) {
+      setModal(false);
+    } else {
+      setModal(true);
+    }
+  }
 
-  const onFinish2 = (e) => {
-    setState(state => state.push(e))
-  };
+  function Finish(values) {
+    console.log(values);
+  }
 
-
+  const [modal, setModal] = useState(false);
   return (
-    <>
+    <div className={style.modal}>
       <div>
-        <Form onFinish={onFinish2}>
-          <Form.Item label="username" name="name">
-            <Input placeholder='Username' name='name' />
+        <Form
+        className={style.form}
+          onFinish={Finish}
+          style={{
+            width: '85%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            top: modal ? '20%' : '-100%',
+            zIndex: 10,
+          }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+            }}>
+            <Form.Item label='username' required={true} name='description_Uz'>
+              <Input
+                style={{width: 300}}
+                placeholder='Write education name (Uz)'
+              />
+            </Form.Item>
+
+            <Form.Item
+              label='username'
+              required={true}
+              name='description_Ru'>
+              <Input
+                style={{width: 300}}
+                placeholder='Write education name (Uz)'
+              />
+            </Form.Item>
+            <Form.Item
+              label='username'
+              required={true}
+              name='description_En'>
+              <Input
+                style={{width: 300}}
+                placeholder='Write education name (Uz)'
+              />
+            </Form.Item>
+          </div>
+
+          <Form>
+            <Form.Item label="name">
+              <Input placeholder='write education name' />
+            </Form.Item>
+          </Form>
+
+          <Form.Item label='isOnline' valuePropName="checked" name='isOnlineExists'>
+            <Checkbox type='Checkbox'/>
           </Form.Item>
-          <Form.Item>
-            <Button type='primary' htmlType='submit'>send</Button>
-          </Form.Item>
+
+
+          <Button style={{width: '100%'}} type='primary' htmlType='submit'>
+            Send
+          </Button>
         </Form>
-        </div>
 
-      {/* <h2>{state.length }</h2> */}
-      {
-        state.map((item) => {
-          return (
-            <>
-              <h2 key={item.username}>{item.name}</h2>
-            </>
-          )
-        })
-      }
-    </>
-  )
-}
+        <Button
+          style={{width: '100%', zIndex: 0}}
+          onClick={openModal}
+          type='primary'>
+          Add Education
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-export default Page1
+export default Page1;

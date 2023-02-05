@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
-import {isEmpty} from './GlobalHelper';
+import { useEffect, useState } from 'react';
+import { isEmpty } from './GlobalHelper';
 import jwtAxios from './../services/auth/jwt-auth/jwt-api';
-import {API_FAILED} from '../../shared/constants/SystemMessages';
-import {isRequestSuccessful} from './Utils';
-import {fetchError} from '../../redux/actions';
+import { API_FAILED } from '../../shared/constants/SystemMessages';
+import { isRequestSuccessful } from './Utils';
+import { fetchError } from '../../redux/actions';
 
 export const useGetDataApi = (
   url,
@@ -71,15 +71,15 @@ export const useGetDataApi = (
       }
       let params = {};
       if (keywords || !isEmpty(queryParams)) {
-        params = {search: keywords, ...queryParams};
+        params = { search: keywords, ...queryParams };
       }
       if (Array.isArray(apiData) && !noPagination) {
-        params = {...queryParams, page, search: keywords};
+        params = { ...queryParams, page, search: keywords };
       }
       console.log('Called: ', initialUrl, params);
       jwtAxios
-        .get(initialUrl, {params})
-        .then(({data}) => {
+        .get(initialUrl, { params })
+        .then(({ data }) => {
           if (!didCancel) {
             if (isRequestSuccessful(data.status)) {
               console.log(
@@ -218,11 +218,11 @@ export const useOptionDataApi = (
       }
       let params = {};
       if (keywords || !isEmpty(queryParams)) {
-        params = {keywords: keywords, ...queryParams};
+        params = { keywords: keywords, ...queryParams };
       }
       jwtAxios
-        .options(updatedUrl(), {params})
-        .then(({data}) => {
+        .options(updatedUrl(), { params })
+        .then(({ data }) => {
           console.log('data: ', data);
           if (!didCancel) {
             if (isRequestSuccessful(data.status)) {
@@ -269,7 +269,7 @@ export const useOptionDataApi = (
     };
   }, [page, keywords, queryParams, refreshing]);
   return [
-    {loading, apiData, page, isLoadingMore, refreshing},
+    { loading, apiData, page, isLoadingMore, refreshing },
     {
       setPage,
       setData,
@@ -288,13 +288,13 @@ export const postDataApi = (
   infoViewContext,
   isHideLoader = false,
 ) => {
-  const {fetchStart, fetchSuccess, fetchError} = infoViewContext;
+  const { fetchStart, fetchSuccess, fetchError } = infoViewContext;
   return new Promise((resolve) => {
     console.log('Called: ', url, payload);
     if (!isHideLoader) fetchStart();
     jwtAxios
       .post(url, payload)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (isRequestSuccessful(data.status)) {
           console.log('Success: ', url, data.result);
           fetchSuccess();
@@ -318,13 +318,13 @@ export const putDataApi = (
   infoViewContext,
   isHideLoader = false,
 ) => {
-  const {fetchStart, fetchSuccess, fetchError} = infoViewContext;
+  const { fetchStart, fetchSuccess, fetchError } = infoViewContext;
   return new Promise((resolve) => {
     console.log('Called: ', url, payload);
     if (!isHideLoader) fetchStart();
     jwtAxios
       .put(url, payload)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (isRequestSuccessful(data.status)) {
           console.log('Success: ', url, data.result);
           fetchSuccess();
@@ -343,13 +343,13 @@ export const putDataApi = (
 };
 
 export const getDataApi = (url, infoViewContext, isHideLoader = false) => {
-  const {fetchStart, fetchSuccess, fetchError} = infoViewContext;
+  const { fetchStart, fetchSuccess, fetchError } = infoViewContext;
   return new Promise((resolve) => {
     console.log('Called: ', url, jwtAxios.defaults.headers.common);
     if (!isHideLoader) fetchStart();
     jwtAxios
       .get(url)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (isRequestSuccessful(data.status)) {
           console.log('Success: ', url, data.result);
           fetchSuccess();
@@ -368,13 +368,13 @@ export const getDataApi = (url, infoViewContext, isHideLoader = false) => {
 };
 
 export const deleteDataApi = (url, infoViewContext, isHideLoader = false) => {
-  const {fetchStart, fetchSuccess, fetchError} = infoViewContext;
+  const { fetchStart, fetchSuccess, fetchError } = infoViewContext;
   return new Promise((resolve) => {
     console.log('Called: ', url);
     if (!isHideLoader) fetchStart();
     jwtAxios
       .delete(url)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (isRequestSuccessful(data.status)) {
           console.log('Success: ', url, data.result);
           fetchSuccess();
