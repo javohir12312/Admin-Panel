@@ -54,7 +54,7 @@ const Page2 = () => {
     }
   };
 
-  const showDeleteConfirm = () => {
+  const showDeleteConfirm = (e) => {
     confirm({
       title: 'Are you sure delete this task?',
       icon: <ExclamationCircleFilled />,
@@ -63,7 +63,15 @@ const Page2 = () => {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        const handleDel = async () => {
+          try {
+            const rest = await axios.delete(`/it/${e.target.id}`);
+            console.log(rest);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        handleDel()
       },
       onCancel() {
         console.log('Cancel');
@@ -96,18 +104,18 @@ const Page2 = () => {
 
           {data.map((item) => {
             return (
-              <div className={style.box} key={item.id}>
-                <ul>
-                  <li key={item.id}>
-                    <p>Name:</p>{' '}
+              <div className={style.box} key={item._id}>
+                <ul key={item._id}>
+                  <li >
+                    <p>Name:</p>
                   </li>
-                  <li key={item.id}>
+                  <li >
                     <p>{item.name_Uz} (Uz)</p>
                   </li>
-                  <li key={item.id}>
+                  <li >
                     <p>{item.name_Ru} (Ru)</p>
                   </li>
-                  <li key={item.id}>
+                  <li >
                     <p>{item.name_En}(En)</p>
                   </li>
                   <li key={item.id}>
@@ -118,7 +126,7 @@ const Page2 = () => {
                       Edit <EditOutlined />
                     </Button>
 
-                    <Button onClick={showDeleteConfirm} type='danger'>
+                    <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
                       Delete
                     </Button>
                   </li>

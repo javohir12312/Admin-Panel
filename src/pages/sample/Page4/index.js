@@ -1,11 +1,11 @@
-import { Form, Input, Modal } from 'antd';
-import { useEffect, useState } from 'react';
-import { Upload, Button } from 'antd';
+import {Form, Input, Modal, Upload} from 'antd';
+import {useEffect, useState} from 'react';
+import {Button} from 'antd';
 import axios from '../../../@crema/services/apis/index';
-import style from "../Page3/Page3.module.scss";
+import style from '../Page2/Page2.module.scss';
 import Loader from '../Loader/Loader';
-import { EditOutlined, ExclamationCircleFilled } from '@ant-design/icons';
-
+import {EditOutlined, ExclamationCircleFilled} from '@ant-design/icons';
+const {confirm} = Modal;
 const Page1 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   //loader is true
@@ -53,16 +53,24 @@ const Page1 = () => {
     }
   };
 
-  const showDeleteConfirm = () => {
+  const showDeleteConfirm = (e) => {
     confirm({
       title: 'Are you sure delete this task?',
-      icon: <ExclamationCircleFilled/>,
+      icon: <ExclamationCircleFilled />,
       content: 'Some descriptions',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        const handleDel = async () => {
+          try {
+            const rest = await axios.delete(`/subjects/${e.target.id}`);
+            console.log(rest);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        handleDel()
       },
       onCancel() {
         console.log('Cancel');
@@ -81,7 +89,7 @@ const Page1 = () => {
       }
     });
 
-  }
+}
   return (
     <>
       {loading ? <Loader /> :
@@ -94,8 +102,8 @@ const Page1 = () => {
 
           {data.map((item) => {
             return (
-              <div className={style.box} key={item.id}>
-                <ul>
+              <div className={style.box} key={item._id}>
+                <ul key={item._id}>
                   <li>
                     <p>Name:</p>
                   </li>
@@ -116,7 +124,7 @@ const Page1 = () => {
                       Edit <EditOutlined />
                     </Button>
 
-                    <Button onClick={showDeleteConfirm} type='danger'>
+                    <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
                       Delete
                     </Button>
                   </li>

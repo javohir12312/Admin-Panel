@@ -18,7 +18,7 @@ const Page2 = () => {
 
   //Modal open
   const showModal = () => {
-    setIsModalOpen("add");
+    setIsModalOpen('add');
   };
   //Modal close
   const handleCancel = () => {
@@ -54,7 +54,7 @@ const Page2 = () => {
     }
   };
 
-  const showDeleteConfirm = () => {
+  const showDeleteConfirm = (e) => {
     confirm({
       title: 'Are you sure delete this task?',
       icon: <ExclamationCircleFilled />,
@@ -63,7 +63,15 @@ const Page2 = () => {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        const handleDel = async () => {
+          try {
+            const rest = await axios.delete(`/edu/${e.target.id}`);
+            console.log(rest);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        handleDel()
       },
       onCancel() {
         console.log('Cancel');
@@ -76,18 +84,17 @@ const Page2 = () => {
     console.log(id);
 
     data.map((item) => {
-      setIsModalOpen("edit")
+      setIsModalOpen('edit');
       if (item._id === id) {
         return setEdit(item), console.log(edit);
       }
     });
-
   }
 
   return (
     <>
       {loading ? (
-        <Loader />  
+        <Loader />
       ) : (
         <>
           <Button type='primary' onClick={showModal}>
@@ -97,20 +104,20 @@ const Page2 = () => {
           {data.map((item) => {
             return (
               <div className={style.box} key={item.id}>
-                <ul>
-                  <li key={item.id}>
-                    <p>Name:</p>{' '}
+                <ul key={1}>
+                  <li>
+                    <p>Name:</p>
                   </li>
-                  <li key={item.id}>
+                  <li>
                     <p>{item.name_Uz} (Uz)</p>
                   </li>
-                  <li key={item.id}>
+                  <li>
                     <p>{item.name_Ru} (Ru)</p>
                   </li>
-                  <li key={item.id}>
+                  <li>
                     <p>{item.name_En}(En)</p>
                   </li>
-                  <li key={item.id}>
+                  <li>
                     <img src={item.photo} alt='' />
                   </li>
                   <li style={{display: 'flex', gap: 20}}>
@@ -118,7 +125,7 @@ const Page2 = () => {
                       Edit <EditOutlined />
                     </Button>
 
-                    <Button onClick={showDeleteConfirm} type='danger'>
+                    <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
                       Delete
                     </Button>
                   </li>
@@ -131,7 +138,7 @@ const Page2 = () => {
           <Modal
             width={1100}
             title='Basic Modal'
-            visible={isModalOpen == "add" ? true : false}
+            visible={isModalOpen == 'add' ? true : false}
             footer={null}
             onCancel={handleCancel}>
             <Form onFinish={handleSubmit}>
@@ -185,7 +192,7 @@ const Page2 = () => {
           <Modal
             title='20px to Top'
             style={{top: 20}}
-            visible={isModalOpen == "edit" ? true : false}
+            visible={isModalOpen == 'edit' ? true : false}
             footer={null}
             onOk={() => setIsModalOpen(false)}
             onCancel={() => setIsModalOpen(false)}>
