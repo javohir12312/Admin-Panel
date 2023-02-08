@@ -71,7 +71,7 @@ const Page2 = () => {
             console.log(error);
           }
         };
-        handleDel()
+        handleDel();
       },
       onCancel() {
         console.log('Cancel');
@@ -125,7 +125,10 @@ const Page2 = () => {
                       Edit <EditOutlined />
                     </Button>
 
-                    <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
+                    <Button
+                      id={item._id}
+                      onClick={showDeleteConfirm}
+                      type='danger'>
                       Delete
                     </Button>
                   </li>
