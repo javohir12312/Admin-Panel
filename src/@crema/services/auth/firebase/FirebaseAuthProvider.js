@@ -150,6 +150,7 @@ const FirebaseAuthProvider = ({children}) => {
         isLoading: false,
         isAuthenticated: false,
       });
+      localStorage.removeItem('token');
     } catch (error) {
       setFirebaseData({
         user: null,
