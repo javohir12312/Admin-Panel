@@ -5,12 +5,26 @@ import AppPageMetadata from '../../../@crema/core/AppPageMetadata';
 import axios from 'axios';
 // import SignInFirebase from './SigninFirebase';
 
+
 import {Button, Form, Input} from 'antd';
+import IntlMessages from '@crema/utility/IntlMessages';
+// import {useDispatch} from 'react-redux';
+// import { LOGIN } from 'shared/constants/ActionTypes';
+// import { useHistory } from 'react-router-dom';
+import { useAuthMethod } from '@crema/utility/AuthHooks';
 
 const Signin = () => {
+  // const history = useHistory()
+  const {signInWithEmailAndPassword} = useAuthMethod();
+  // const dispatch = useDispatch();
   const onFinish = (values) => {
     console.log('Success:', values);
     login(values.email, values.password);
+    console.log(values.email);
+
+    // dispatch({type: LOGIN});
+    // history.push("/sample/page-1");
+    signInWithEmailAndPassword()
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -26,10 +40,10 @@ const Signin = () => {
           password,
         },
       );
-      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('token', response.data.token);
       console.log(response.data);
     } catch (e) {
-      console.log(e.response.data.message);
+      console.log(e?.response?.data?.message);
     }
   };
 
@@ -89,7 +103,7 @@ const Signin = () => {
             span: 16,
           }}>
           <Button type='primary' htmlType='submit'>
-            Submit
+            <IntlMessages id='common.login' />
           </Button>
         </Form.Item>
       </Form>
