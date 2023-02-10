@@ -54,13 +54,27 @@ const Page2 = () => {
 
   //patch data
   const handleEdit = async (e) => {
+    const formData = new FormData();
+    formData.append('name_Uz', e.name_Uz);
+    formData.append('name_Ru', e.name_Ru);
+    formData.append('name_En', e.name_En);
+    formData.append('photo', e.photo.file);
+    console.log(e);
     try {
-      const rest = await axios.patch(`/it/${edit._id}`, e);
+      const rest = await axios.patch(`/it/${edit._id}`, formData);
       console.log(rest);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const [form] = Form.useForm();
+
+  function Clear() {
+    setTimeout(() => {
+      form.resetFields()
+    }, 300);
+  }
 
   const showDeleteConfirm = (e) => {
     confirm({
@@ -126,7 +140,7 @@ const Page2 = () => {
                     <p>{item.name_En}(En)</p>
                   </li>
                   <li key={item.id}>
-                    <img src={`http://18.216.178.179/api/v1/img/${item.photo}` } alt='' />
+                    <img src={`http://18.216.178.179/api/v1/img/${item.photo}` } alt='' width={100} height={100}/>
                   </li>
                   <li style={{display: 'flex', gap: 20}}>
                     <Button id={item._id} onClick={openEdit} type='primary'>
@@ -137,7 +151,7 @@ const Page2 = () => {
                       id={item._id}
                       onClick={showDeleteConfirm}
                       type='danger'>
-                      Delete
+                      <span id={item._id}>Delete</span>
                     </Button>
                   </li>
                 </ul>
@@ -152,7 +166,7 @@ const Page2 = () => {
             visible={isModalOpen == 'add' ? true : false}
             footer={null}
             onCancel={handleCancel}>
-            <Form onFinish={handleSubmit}>
+            <Form form={form} onFinish={handleSubmit}>
               <Form.Item label='Name (Uz)' name='name_Uz'>
                 <Input placeholder='Write course name lang(Uz)' />
               </Form.Item>
@@ -191,7 +205,7 @@ const Page2 = () => {
                 </Button>
                 <Button
                   htmlType='submit'
-                  // onClick={handleSubmit}
+                  onClick={Clear}
                   type='primary'
                   style={{width: '50%'}}>
                   Create
@@ -207,7 +221,7 @@ const Page2 = () => {
             footer={null}
             onOk={() => setIsModalOpen(false)}
             onCancel={() => setIsModalOpen(false)}>
-            <Form onFinish={handleEdit}>
+            <Form form={form} onFinish={handleEdit}>
               <Form.Item label='Name (Uz)' name='name_Uz'>
                 <Input placeholder='Write course name lang(Uz)' />
               </Form.Item>
@@ -244,7 +258,7 @@ const Page2 = () => {
                   style={{width: '50%'}}>
                   Cencel
                 </Button>
-                <Button htmlType='submit' type='primary' style={{width: '50%'}}>
+                <Button onClick={Clear} htmlType='submit' type='primary' style={{width: '50%'}}>
                   Edit
                 </Button>
               </div>

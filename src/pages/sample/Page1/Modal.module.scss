@@ -25,12 +25,19 @@
     width: 90%;
     padding-top: 20px;
 
-    ul{
+    ul {
+        height: 100px;
+        padding: 0;
+        margin: 0;
+        border: 1px solid;
+        padding: 10px;
         width: 100%;
         list-style: none;
         border: 2px solid dotted;
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
+        overflow: hidden;
+        border-radius: 12px;
+      }
 }
