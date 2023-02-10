@@ -16,9 +16,11 @@ const Page2 = () => {
   //data edit arr
   const [edit, setEdit] = useState([]);
 
+  ///FormData
+
   //Modal open
   const showModal = () => {
-    setIsModalOpen("add");
+    setIsModalOpen('add');
   };
   //Modal close
   const handleCancel = () => {
@@ -35,9 +37,15 @@ const Page2 = () => {
 
   ///post data
   const handleSubmit = async (e) => {
+    console.log(e.photo.file);
+    const formData = new FormData();
+    formData.append('name_Uz', e.name_Uz);
+    formData.append('name_Ru', e.name_Ru);
+    formData.append('name_En', e.name_En);
+    formData.append('photo', e.photo.file);
     console.log(e);
     try {
-      const resp = await axios.post('/it', e);
+      const resp = await axios.post('/it', formData);
       console.log(resp);
     } catch (error) {
       console.log(error);
@@ -46,13 +54,27 @@ const Page2 = () => {
 
   //patch data
   const handleEdit = async (e) => {
+    const formData = new FormData();
+    formData.append('name_Uz', e.name_Uz);
+    formData.append('name_Ru', e.name_Ru);
+    formData.append('name_En', e.name_En);
+    formData.append('photo', e.photo.file);
+    console.log(e);
     try {
-      const rest = await axios.patch(`/it/${edit._id}`, e);
+      const rest = await axios.patch(`/it/${edit._id}`, formData);
       console.log(rest);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const [form] = Form.useForm();
+
+  function Clear() {
+    setTimeout(() => {
+      form.resetFields()
+    }, 300);
+  }
 
   const showDeleteConfirm = (e) => {
     confirm({
@@ -71,7 +93,7 @@ const Page2 = () => {
             console.log(error);
           }
         };
-        handleDel()
+        handleDel();
       },
       onCancel() {
         console.log('Cancel');
@@ -84,18 +106,17 @@ const Page2 = () => {
     console.log(id);
 
     data.map((item) => {
-      setIsModalOpen("edit")
+      setIsModalOpen('edit');
       if (item._id === id) {
         return setEdit(item), console.log(edit);
       }
     });
-
   }
 
   return (
     <>
       {loading ? (
-        <Loader />  
+        <Loader />
       ) : (
         <>
           <Button type='primary' onClick={showModal}>
@@ -106,28 +127,31 @@ const Page2 = () => {
             return (
               <div className={style.box} key={item._id}>
                 <ul key={item._id}>
-                  <li >
+                  <li>
                     <p>Name:</p>
                   </li>
-                  <li >
+                  <li>
                     <p>{item.name_Uz} (Uz)</p>
                   </li>
-                  <li >
+                  <li>
                     <p>{item.name_Ru} (Ru)</p>
                   </li>
-                  <li >
+                  <li>
                     <p>{item.name_En}(En)</p>
                   </li>
                   <li key={item.id}>
-                    <img src={item.photo} alt='' />
+                    <img src={`http://18.216.178.179/api/v1/img/${item.photo}` } alt='' width={100} height={100}/>
                   </li>
                   <li style={{display: 'flex', gap: 20}}>
                     <Button id={item._id} onClick={openEdit} type='primary'>
                       Edit <EditOutlined />
                     </Button>
 
-                    <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
-                      Delete
+                    <Button
+                      id={item._id}
+                      onClick={showDeleteConfirm}
+                      type='danger'>
+                      <span id={item._id}>Delete</span>
                     </Button>
                   </li>
                 </ul>
@@ -139,10 +163,65 @@ const Page2 = () => {
           <Modal
             width={1100}
             title='Basic Modal'
-            visible={isModalOpen == "add" ? true : false}
+            visible={isModalOpen == 'add' ? true : false}
             footer={null}
             onCancel={handleCancel}>
-            <Form onFinish={handleSubmit}>
+            <Form form={form} onFinish={handleSubmit}>
+              <Form.Item label='Name (Uz)' name='name_Uz'>
+                <Input placeholder='Write course name lang(Uz)' />
+              </Form.Item>
+              <Form.Item label='name (Ru)' name='name_Ru'>
+                <Input placeholder='Write course name lang(Ru)' />
+              </Form.Item>
+              <Form.Item label='Name (En)' name='name_En'>
+                <Input placeholder='Write course name lang(En)' />
+              </Form.Item>
+              <Form.Item name="photo">
+              <Upload
+                maxCount={1}
+                accept='.png, .jpeg, .svg'
+                showUploadList={{showDownloadIcon: false}}
+                action={'http://localhost:3000'}
+                beforeUpload={(file) => {
+                  console.log({file});
+                  return false;
+                }}
+                listType='picture'>
+                <Button>Upload</Button>
+              </Upload>
+              </Form.Item>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 10,
+                  width: 200,
+                  marginLeft: 'auto',
+                }}>
+                <Button
+                  onClick={handleCancel}
+                  type='primary'
+                  style={{width: '50%'}}>
+                  Cencel
+                </Button>
+                <Button
+                  htmlType='submit'
+                  onClick={Clear}
+                  type='primary'
+                  style={{width: '50%'}}>
+                  Create
+                </Button>
+              </div>
+            </Form>
+          </Modal>
+
+          <Modal
+            title={edit.name_Uz}
+            style={{top: 20}}
+            visible={isModalOpen == 'edit' ? true : false}
+            footer={null}
+            onOk={() => setIsModalOpen(false)}
+            onCancel={() => setIsModalOpen(false)}>
+            <Form form={form} onFinish={handleEdit}>
               <Form.Item label='Name (Uz)' name='name_Uz'>
                 <Input placeholder='Write course name lang(Uz)' />
               </Form.Item>
@@ -159,7 +238,7 @@ const Page2 = () => {
                   showUploadList={{showDownloadIcon: false}}
                   action={'http://localhost:3000'}
                   beforeUpload={(file) => {
-                    console.log({file});
+                    console.log(file.file);
                     return false;
                   }}
                   listType='picture'>
@@ -179,75 +258,7 @@ const Page2 = () => {
                   style={{width: '50%'}}>
                   Cencel
                 </Button>
-                <Button
-                  htmlType='submit'
-                  // onClick={handleSubmit}
-                  type='primary'
-                  style={{width: '50%'}}>
-                  Create
-                </Button>
-              </div>
-            </Form>
-          </Modal>
-
-          <Modal
-            title='20px to Top'
-            style={{top: 20}}
-            visible={isModalOpen == "edit" ? true : false}
-            footer={null}
-            onOk={() => setIsModalOpen(false)}
-            onCancel={() => setIsModalOpen(false)}>
-            <Form onFinish={handleEdit}>
-              <Form.Item
-                label='Name (Uz)'
-                name='name_Uz'
-                initialValue={edit.name_Uz}>
-                <Input placeholder='Write course name lang(Uz)' />
-              </Form.Item>
-              <Form.Item
-                label='name (Ru)'
-                name='name_Ru'
-                initialValue={edit.name_Ru}>
-                <Input placeholder='Write course name lang(Ru)' />
-              </Form.Item>
-              <Form.Item
-                label='Name (En)'
-                name='name_En'
-                initialValue={edit.name_En}>
-                <Input placeholder='Write course name lang(En)' />
-              </Form.Item>
-              <Form.Item label='Course img' name='photo'>
-                <Upload
-                  maxCount={1}
-                  accept='.png, .jpeg, .svg'
-                  showUploadList={{showDownloadIcon: false}}
-                  action={'http://localhost:3000'}
-                  beforeUpload={(file) => {
-                    console.log({file});
-                    return false;
-                  }}
-                  listType='picture'>
-                  <Button>Upload</Button>
-                </Upload>
-              </Form.Item>
-              <div
-                style={{
-                  display: 'flex',
-                  gap: 10,
-                  width: 200,
-                  marginLeft: 'auto',
-                }}>
-                <Button
-                  onClick={handleCancel}
-                  type='primary'
-                  style={{width: '50%'}}>
-                  Cencel
-                </Button>
-                <Button
-                  htmlType='submit'
-                  // onClick={handleSubmit}
-                  type='primary'
-                  style={{width: '50%'}}>
+                <Button onClick={Clear} htmlType='submit' type='primary' style={{width: '50%'}}>
                   Edit
                 </Button>
               </div>

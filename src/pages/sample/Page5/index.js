@@ -1,11 +1,11 @@
-import {Form, Input, Modal, Upload} from 'antd';
-import {useEffect, useState} from 'react';
-import {Button} from 'antd';
+import { Form, Input, Modal, Upload } from 'antd';
+import { useEffect, useState } from 'react';
+import { Button } from 'antd';
 import axios from '../../../@crema/services/apis/index';
 import style from '../Page2/Page2.module.scss';
 import Loader from '../Loader/Loader';
-import {EditOutlined, ExclamationCircleFilled} from '@ant-design/icons';
-const {confirm} = Modal;
+import { EditOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+const { confirm } = Modal;
 
 const Page1 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +16,14 @@ const Page1 = () => {
   //data edit arr
   const [edit, setEdit] = useState([]);
 
+
+  const [form] = Form.useForm();
+
+  function Clear() {
+    setTimeout(() => {
+      form.resetFields()
+    }, 300);
+  }
   //Modal open
   const showModal = () => {
     setIsModalOpen("add");
@@ -35,9 +43,15 @@ const Page1 = () => {
 
   ///post data
   const handleSubmit = async (e) => {
+    console.log(e.photo.file);
+    const formData = new FormData();
+    formData.append('name_Uz', e.name_Uz);
+    formData.append('name_Ru', e.name_Ru);
+    formData.append('name_En', e.name_En);
+    formData.append('photo', e.photo.file);
     console.log(e);
     try {
-      const resp = await axios.post('/other', e);
+      const resp = await axios.post('/other', formData);
       console.log(resp);
     } catch (error) {
       console.log(error);
@@ -46,14 +60,19 @@ const Page1 = () => {
 
   //patch data
   const handleEdit = async (e) => {
+    const formData = new FormData();
+    formData.append('name_Uz', e.name_Uz);
+    formData.append('name_Ru', e.name_Ru);
+    formData.append('name_En', e.name_En);
+    formData.append('photo', e.photo.file);
+    console.log(e);
     try {
-      const rest = await axios.patch(`/other/${edit._id}`, e);
+      const rest = await axios.patch(`/other/${edit._id}`, formData);
       console.log(rest);
     } catch (error) {
       console.log(error);
     }
   };
-
   const showDeleteConfirm = (e) => {
     confirm({
       title: 'Are you sure delete this task?',
@@ -118,7 +137,7 @@ const Page1 = () => {
                     <p>{item.name_En}(En)</p>
                   </li>
                   <li>
-                    <img src={item.photo} alt="" />
+                    <img src={`http://18.216.178.179/api/v1/img/${item.photo}`} alt="" width={100} height={100} />
                   </li>
                   <li style={{ display: 'flex', gap: 20 }}>
                     <Button id={item._id} onClick={openEdit} type='primary'>
@@ -126,7 +145,7 @@ const Page1 = () => {
                     </Button>
 
                     <Button id={item._id} onClick={showDeleteConfirm} type='danger'>
-                      Delete
+                      <span id={item._id}>Delete</span>
                     </Button>
                   </li>
                 </ul>
@@ -141,7 +160,7 @@ const Page1 = () => {
             visible={isModalOpen == "add" ? true : false}
             footer={null}
             onCancel={handleCancel}>
-            <Form onFinish={handleSubmit}>
+            <Form form={form} onFinish={handleSubmit}>
               <Form.Item label='Name (Uz)' name="name_Uz">
                 <Input placeholder='Write course name lang(Uz)' />
               </Form.Item>
@@ -165,7 +184,7 @@ const Page1 = () => {
                 <Button type='primary' style={{ width: '50%' }}>
                   Cencel
                 </Button>
-                <Button htmlType='submit' type='primary' style={{ width: '50%' }}>
+                <Button onClick={Clear} htmlType='submit' type='primary' style={{ width: '50%' }}>
                   Create
                 </Button>
               </div>
@@ -174,29 +193,26 @@ const Page1 = () => {
           </Modal>
 
           <Modal
-            title='20px to Top'
+            title={edit.name_Uz}
             style={{ top: 20 }}
             visible={isModalOpen == "edit" ? true : false}
             footer={null}
             onOk={() => setIsModalOpen(false)}
             onCancel={() => setIsModalOpen(false)}>
-            <Form onFinish={handleEdit}>
+            <Form form={form} onFinish={handleEdit}>
               <Form.Item
                 label='Name (Uz)'
-                name='name_Uz'
-                initialValue={edit.name_Uz}>
+                name='name_Uz'>
                 <Input placeholder='Write course name lang(Uz)' />
               </Form.Item>
               <Form.Item
                 label='name (Ru)'
-                name='name_Ru'
-                initialValue={edit.name_Ru}>
+                name='name_Ru'>
                 <Input placeholder='Write course name lang(Ru)' />
               </Form.Item>
               <Form.Item
                 label='Name (En)'
-                name='name_En'
-                initialValue={edit.name_En}>
+                name='name_En'>
                 <Input placeholder='Write course name lang(En)' />
               </Form.Item>
               <Form.Item label='Course img' name='photo'>
@@ -228,7 +244,7 @@ const Page1 = () => {
                 </Button>
                 <Button
                   htmlType='submit'
-                  // onClick={handleSubmit}
+                  onClick={Clear}
                   type='primary'
                   style={{ width: '50%' }}>
                   Edit

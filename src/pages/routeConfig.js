@@ -1,6 +1,5 @@
 import React from 'react';
 import { BiCodeAlt } from 'react-icons/bi';
-import { MdOutlineManageAccounts } from 'react-icons/md';
 import { GoGlobe, GoMortarBoard } from "react-icons/go";
 import { ImNewspaper } from "react-icons/im";
 import { Si1001Tracklists } from "react-icons/si";
@@ -54,22 +53,6 @@ const routesConfig = [
         path: '/sample/page-5',
       },
     ],
-  },
-  {
-    id: 'extra-pages',
-    title: 'Extra Pages',
-    messageId: 'sidebar.pages.extraPages',
-    path: 'extra-pages',
-    type: 'group',
-    children: [
-      {
-        id: 'account',
-        title: 'Account',
-        messageId: 'sidebar.pages.extraPages.account',
-        icon: <MdOutlineManageAccounts />,
-        path: '/extra-pages/user-profile',
-      },
-    ],
-  },
+  }
 ];
 export default routesConfig;
