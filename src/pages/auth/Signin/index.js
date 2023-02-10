@@ -18,20 +18,20 @@ const Signin = () => {
   const {signInWithEmailAndPassword} = useAuthMethod();
   // const dispatch = useDispatch();
   const onFinish = (values) => {
-    console.log('Success:', values);
-    login(values.email, values.password);
-    console.log(values.email);
+
+    (values.email == 'root1234@gmail.com' && values.password == 'root1234') ? login(values.email, values.password) : (alert("wrong password"));
+
 
     // dispatch({type: LOGIN});
     // history.push("/sample/page-1");
-    signInWithEmailAndPassword()
   };
-
+  
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-
+  
   const login = async (email, password) => {
+    signInWithEmailAndPassword()
     try {
       const response = await axios.post(
         'http://18.216.178.179/api/v1/user/login',
